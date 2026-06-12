@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для моего котейки 💝</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', cursive, sans-serif;
+            background: linear-gradient(145deg, #ffb6c1 0%, #ff69b4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Фон из плавающих сердечек - равномерно распределены */
+        .heart-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .heart-bg span {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.4);
+            animation: floatHeart 15s linear infinite;
+            user-select: none;
+            will-change: transform, opacity;
+        }
+
+        @keyframes floatHeart {
+            0% { 
+                transform: translateY(100vh) scale(0.5) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { 
+                opacity: 0.8; 
+            }
+            90% { 
+                opacity: 0.6; 
+            }
+            100% { 
+                transform: translateY(-20vh) scale(1.2) rotate(360deg); 
+                opacity: 0; 
+            }
+        }
+
+        /* Основная карточка */
+        .valentine-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            border-radius: 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 4px #fff, 0 0 0 8px #ff1493;
+            padding: 40px 30px;
+            text-align: center;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 2px dashed #ff69b4;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #d43f7a;
+            text-shadow: 3px 3px 0 #ffb6c1;
+            margin-bottom: 20px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .hearts-decoration {
+            font-size: 2.5rem;
+            letter-spacing: 15px;
+            animation: pulse 1.8s infinite;
+            margin: 15px 0 5px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .question {
+            font-size: 2rem;
+            color: #b03a5e;
+            background: #ffe4ec;
+            padding: 30px 20px;
+            border-radius: 200px;
+            margin: 25px 0;
+            border: 3px dotted #ff4d6d;
+            box-shadow: inset 0 0 20px #ffb3c6;
+            line-height: 1.6;
+        }
+
+        /* Контейнер для кнопок */
+        .buttons-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            margin: 40px 0 20px;
+            flex-wrap: wrap;
+            min-height: 150px;
+            position: relative;
+            width: 100%;
+        }
+
+        .btn {
+            font-size: 2rem;
+            padding: 20px 45px;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 10px 0 #8b3c5c, 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid white;
+            min-width: 220px;
+            justify-content: center;
+        }
+
+        .btn-yes {
+            background: #ff4d6d;
+            color: white;
+            text-shadow: 2px 2px 0 #a13046;
+        }
+
+        .btn-yes:hover:not(:disabled) {
+            background: #ff3355;
+            transform: scale(1.1);
+            box-shadow: 0 8px 0 #6b2c44, 0 6px 20px gold;
+        }
+
+        .btn-no {
+            background: #cccccc;
+            color: #5a5a5a;
+            text-shadow: 1px 1px 0 #efefef;
+            box-shadow: 0 10px 0 #7a7a7a;
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .btn-no:hover:not(:disabled) {
+            background: #bbbbbb;
+        }
+
+        /* Блок с ответом */
+        .answer-section {
+            display: none;
+            margin-top: 30px;
+            padding: 30px;
+            background: #fff0f5;
+            border-radius: 60px;
+            border: 3px solid #ffb3c6;
+            animation: pop 0.6s;
+        }
+
+        .answer-section.show {
+            display: block;
+        }
+
+        .answer-message {
+            font-size: 2.2rem;
+            color: #c7426f;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .small-hearts {
+            font-size: 2.5rem;
+            margin: 20px 0;
+            color: #ff4d6d;
+            animation: pulse 2s infinite;
+        }
+
+        .signature {
+            font-size: 1.8rem;
+            color: #a1415e;
+            margin-top: 25px;
+            font-style: italic;
+            border-top: 2px dashed #ffb6c1;
+            padding-top: 20px;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.1); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        footer {
+            margin-top: 30px;
+            color: #a1415e;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        /* Адаптация для мобильных */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.2rem; }
+            .question { font-size: 1.5rem; }
+            .btn { font-size: 1.5rem; padding: 15px 30px; min-width: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="heart-bg" id="heartBg"></div>
+
+<div class="valentine-card">
+    <div class="hearts-decoration">😻❤️😽❤️😸❤️😺</div>
+    
+    <h1>💘 Для моего котейки 💘</h1>
+    
+    <div class="question">
+        <span>😍</span> Мой любимый котейка,<br>
+        <span style="font-size: 2.5rem;">🐱💌</span><br>
+        <strong>Ты станешь моей Валентинкой?</strong><br>
+        <span>😘</span>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="buttons-container" id="buttonsContainer">
+        <button class="btn btn-yes" id="btnYes">❤️ ДА! ❤️</button>
+        <button class="btn btn-no" id="btnNo">💔 нет 💔</button>
+    </div>
+
+    <!-- Секция с ответом (без котиков) -->
+    <div id="answerSection" class="answer-section">
+        <div class="answer-message">
+            🎉 УРА! СПАСИБООООО! ТЫ ЛУЧШИЙ! 🎉
+        </div>
+        
+        <div class="small-hearts">
+            ❤️ 😻 ❤️ 😽 ❤️ 😸 ❤️
+        </div>
+        
+        <div class="signature">
+            Люблю тебя до луны и обратно, заюшка 💕
+        </div>
+    </div>
+
+    <footer>с любовью, Арина 🐾</footer>
+</div>
+
+<script>
+    (function() {
+        // 1. Фоновые сердечки - равномерно распределены
+        const bgContainer = document.getElementById('heartBg');
+        const heartSymbols = ['❤️', '🧡', '💛', '💚', '💙', '💜', '💖', '💗', '😻', '😽', '🐱'];
+        
+        // Создаем 60 сердечек с равномерным распределением
+        for (let i = 0; i < 60; i++) {
+            const heart = document.createElement('span');
+            heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            
+            // Равномерно распределяем по горизонтали
+            heart.style.left = (i * 1.7) % 100 + '%'; // Распределение по ширине
+            
+            // Разные размеры
+            heart.style.fontSize = (Math.random() * 30 + 20) + 'px';
+            
+            // Разные задержки анимации
+            heart.style.animationDelay = (Math.random() * 10) + 's';
+            
+            // Разная продолжительность анимации
+            heart.style.animationDuration = (Math.random() * 10 + 12) + 's';
+            
+            bgContainer.appendChild(heart);
+        }
+
+        // 2. Элементы
+        const btnYes = document.getElementById('btnYes');
+        const btnNo = document.getElementById('btnNo');
+        const answerSection = document.getElementById('answerSection');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+
+        // 3. Обработчик на ДА
+        btnYes.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Показываем секцию с ответом
+            answerSection.classList.add('show');
+            
+            // Отключаем кнопки
+            btnYes.disabled = true;
+            btnYes.style.opacity = '0.6';
+            btnNo.disabled = true;
+            btnNo.style.opacity = '0.6';
+            btnNo.style.pointerEvents = 'none';
+            
+            // Эффект конфетти (простой и красивый)
+            for (let i = 0; i < 12; i++) {
+                setTimeout(() => {
+                    const conf = document.createElement('div');
+                    conf.textContent = ['❤️', '🧡', '💛', '💚', '💙', '💜', '😻', '😽', '🐱'][Math.floor(Math.random() * 9)];
+                    conf.style.position = 'fixed';
+                    conf.style.left = Math.random() * 100 + '%';
+                    conf.style.top = Math.random() * 100 + '%';
+                    conf.style.fontSize = (Math.random() * 30 + 30) + 'px';
+                    conf.style.pointerEvents = 'none';
+                    conf.style.zIndex = '9999';
+                    conf.style.transition = 'all 1.5s ease-out';
+                    conf.style.opacity = '1';
+                    conf.style.transform = 'scale(1)';
+                    document.body.appendChild(conf);
+                    
+                    setTimeout(() => {
+                        conf.style.opacity = '0';
+                        conf.style.transform = 'scale(2) rotate(20deg)';
+                        setTimeout(() => conf.remove(), 1500);
+                    }, 100);
+                }, i * 150);
+            }
+        });
+
+        // 4. Кнопка "Нет" убегает от курсора
+        btnNo.addEventListener('mouseover', function(e) {
+            if (btnNo.disabled) return;
+            
+            const containerRect = buttonsContainer.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            // Убеждаемся, что значения не отрицательные
+            if (maxX > 0 && maxY > 0) {
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                
+                btnNo.style.position = 'absolute';
+                btnNo.style.left = randomX + 'px';
+                btnNo.style.top = randomY + 'px';
+            }
+        });
+
+        // Обработка касания для мобильных
+        btnNo.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            if (btnNo.disabled) return;
+            
+            const containerRect = buttonsContainer.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            if (maxX > 0 && maxY > 0) {
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                
+                btnNo.style.position = 'absolute';
+                btnNo.style.left = randomX + 'px';
+                btnNo.style.top = randomY + 'px';
+            }
+        });
+
+        // Если всё же нажали на "Нет"
+        btnNo.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (btnNo.disabled) return;
+            
+            alert('😿 Не получится! Ты же мой котейка! Нажимай "ДА"! 😸');
+            
+            // Двигаем кнопку
+            const containerRect = buttonsContainer.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            if (maxX > 0 && maxY > 0) {
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                
+                btnNo.style.position = 'absolute';
+                btnNo.style.left = randomX + 'px';
+                btnNo.style.top = randomY + 'px';
+            }
+        });
+
+        // При изменении размера окна сбрасываем позицию
+        window.addEventListener('resize', function() {
+            btnNo.style.position = 'relative';
+            btnNo.style.left = 'auto';
+            btnNo.style.top = 'auto';
+        });
+
+    })();
+</script>
+</body>
+</html>
